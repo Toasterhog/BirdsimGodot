@@ -1,0 +1,11 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://y7vsrbwf0n84"]
+
+[ext_resource type="Texture2D" uid="uid://erxtd1ni3b3s" path="res://terrain/dry_mud.jpg" id="1_ne5ko"]
+[ext_resource type="Texture2D" uid="uid://dpuq3pvnmk2vy" path="res://terrain/HM3.png" id="2_2r6m3"]
+
+[resource]
+specular_mode = 2
+albedo_color = Color(0.275866, 0.249382, 0.133009, 1)
+metallic_specular = 0.0
+detail_mask = ExtResource("2_2r6m3")
+detail_albedo = ExtResource("1_ne5ko")

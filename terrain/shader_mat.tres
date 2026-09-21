@@ -1,0 +1,68 @@
+[gd_resource type="ShaderMaterial" load_steps=9 format=3 uid="uid://cbqfj13d0m0b6"]
+
+[ext_resource type="Texture2D" uid="uid://bgj4k1gabq8jy" path="res://terrain/HM3suddig.png" id="1_4j3py"]
+[ext_resource type="Texture2D" uid="uid://bg4qrxkmqcwhl" path="res://terrain/grass_big.png" id="1_kowly"]
+[ext_resource type="Texture2D" uid="uid://erxtd1ni3b3s" path="res://terrain/dry_mud.jpg" id="2_sco4y"]
+[ext_resource type="Texture2D" uid="uid://dxfm4agq1viyf" path="res://terrain/IMG_8635.JPG" id="2_xjfgu"]
+[ext_resource type="Texture2D" uid="uid://cwpaurr6kbja2" path="res://terrain/seamless-flat-rock.jpg" id="5_ernmk"]
+
+[sub_resource type="Shader" id="Shader_gbfbk"]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_burley, specular_schlick_ggx;
+
+uniform sampler2D tex1 : source_color, filter_linear_mipmap, repeat_enable;
+uniform sampler2D tex2 : source_color, filter_linear_mipmap, repeat_enable;
+uniform sampler2D tex3 : source_color, filter_linear_mipmap, repeat_enable;
+uniform sampler2D maskNoise : source_color, filter_linear_mipmap, repeat_disable;
+uniform sampler2D maskHeight : source_color, filter_linear_mipmap, repeat_disable;
+
+uniform float texture_scale1 = 75.0;
+uniform float texture_scale2 = 75.0;
+
+//uniform vec4 albedo : source_color = vec4(1.0);
+//uniform float roughness : hint_range(0.0, 1.0) = 1.0;
+//uniform float metallic : hint_range(0.0, 1.0) = 0.0;
+uniform float heightmapContribution : hint_range(0.0, 1.0) = 0.5;
+uniform sampler2D gradientTexture;
+
+
+void fragment() {
+	// Original UV: 0 -> 1 across the entire terrain
+	vec2 mask_uv = UV;
+
+	// Repeat the textures across the terrain
+	float mask_value = (texture(maskNoise, mask_uv).r *(1.0-heightmapContribution) + texture(maskHeight, mask_uv).r * heightmapContribution);
+	vec3 weights = texture(gradientTexture, vec2(mask_value,0)).rgb;
+
+	vec3 color1 = texture(tex1, UV * texture_scale1).rgb;
+	vec3 color2 = texture(tex2, UV * texture_scale2).rgb;
+	vec3 color3 = texture(tex3, UV * texture_scale1).rgb;
+	
+	//float mix_val = clamp(mask_value*2.0f-0.5f, 0.0, 1.0);
+	//ALBEDO = mix(color1, color2, mix_val) ;
+	ALBEDO = color1 * weights.r + color2 * weights.g + color3 * weights.b;
+	
+	ROUGHNESS = 1.0 - weights.b * 0.2; //roughness;
+	METALLIC = 0.0; //metallic;
+	SPECULAR = 0.3;
+}"
+
+[sub_resource type="Gradient" id="Gradient_xjfgu"]
+offsets = PackedFloat32Array(0.0840336, 0.109244, 0.466387)
+colors = PackedColorArray(0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ernmk"]
+gradient = SubResource("Gradient_xjfgu")
+
+[resource]
+render_priority = 0
+shader = SubResource("Shader_gbfbk")
+shader_parameter/tex1 = ExtResource("1_kowly")
+shader_parameter/tex2 = ExtResource("2_sco4y")
+shader_parameter/tex3 = ExtResource("5_ernmk")
+shader_parameter/maskNoise = ExtResource("2_xjfgu")
+shader_parameter/maskHeight = ExtResource("1_4j3py")
+shader_parameter/texture_scale1 = 20.0
+shader_parameter/texture_scale2 = 75.0
+shader_parameter/heightmapContribution = 0.898
+shader_parameter/gradientTexture = SubResource("GradientTexture1D_ernmk")
