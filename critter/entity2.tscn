@@ -1,30 +1,25 @@
-[gd_scene load_steps=10 format=3 uid="uid://dafaknp0eks4c"]
+[gd_scene load_steps=9 format=3 uid="uid://ma5i7qly3dwv"]
 
-[ext_resource type="Material" uid="uid://dbgxwl22u5cq" path="res://critter/furr_mat.tres" id="1_0yxqv"]
-[ext_resource type="Script" uid="uid://de47j0rvdeeh5" path="res://critter/entity.gd" id="1_iswnu"]
-[ext_resource type="Texture2D" uid="uid://b1nr16yme2a7i" path="res://critter/sheep_face.png" id="3_odfno"]
-
-[sub_resource type="Curve" id="Curve_odfno"]
-_limits = [-1.0, 1.0, 0.0, 1.0]
-_data = [Vector2(0, -1), 0.0, 2.3914, 0, 0, Vector2(0.376582, 1), 0.0, 0.0, 0, 0, Vector2(1, -1), 0.0, 0.0, 0, 0]
-point_count = 3
+[ext_resource type="Script" uid="uid://cysbssk3h678e" path="res://critter/entity_bakup.gd" id="1_j5v35"]
+[ext_resource type="Material" uid="uid://dbgxwl22u5cq" path="res://critter/furr_mat.tres" id="2_m46oo"]
+[ext_resource type="Texture2D" uid="uid://b1nr16yme2a7i" path="res://critter/sheep_face.png" id="3_ad2qp"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_ova5e"]
 radius = 0.4
 
 [sub_resource type="BoxMesh" id="BoxMesh_iswnu"]
-material = ExtResource("1_0yxqv")
+material = ExtResource("2_m46oo")
 size = Vector3(0.5, 0.5, 0.8)
 
 [sub_resource type="SphereMesh" id="SphereMesh_odfno"]
-material = ExtResource("1_0yxqv")
+material = ExtResource("2_m46oo")
 radius = 0.2
 height = 0.35
 radial_segments = 5
 rings = 6
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_ova5e"]
-material = ExtResource("1_0yxqv")
+material = ExtResource("2_m46oo")
 top_radius = 0.05
 bottom_radius = 0.05
 height = 0.3
@@ -34,18 +29,18 @@ radial_segments = 8
 radius = 0.3
 
 [node name="entity" type="Node3D"]
-script = ExtResource("1_iswnu")
-feet_motion = SubResource("Curve_odfno")
+script = ExtResource("1_j5v35")
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="."]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0494276, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.495157, 0)
 shape = SubResource("SphereShape3D_ova5e")
 
 [node name="body" type="Node3D" parent="CharacterBody3D"]
 
 [node name="mesh_body" type="MeshInstance3D" parent="CharacterBody3D/body"]
+visible = false
 mesh = SubResource("BoxMesh_iswnu")
 skeleton = NodePath("../../..")
 
@@ -61,7 +56,7 @@ skeleton = NodePath("../../mesh_body")
 transform = Transform3D(-0.07, 0, -6.11959e-09, 0, 0.07, 0, 6.11959e-09, 0, -0.07, 0, 0.04, -0.275)
 shaded = true
 double_sided = false
-texture = ExtResource("3_odfno")
+texture = ExtResource("3_ad2qp")
 
 [node name="leg_fl" type="Node3D" parent="CharacterBody3D/body"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.17, -0.2, -0.28)
@@ -74,8 +69,20 @@ mesh = SubResource("CylinderMesh_ova5e")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.17, -0.2, -0.28)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D/body/leg_fr"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.168436, 0)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.15)
 mesh = SubResource("CylinderMesh_ova5e")
+
+[node name="leg_fr_lower" type="Node3D" parent="CharacterBody3D/body/leg_fr"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.3)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D/body/leg_fr/leg_fr_lower"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.15)
+mesh = SubResource("CylinderMesh_ova5e")
+
+[node name="raycast_leg" type="RayCast3D" parent="CharacterBody3D/body/leg_fr"]
+enabled = false
+debug_shape_custom_color = Color(0.682353, 0.105882, 0.372549, 1)
+debug_shape_thickness = 3
 
 [node name="leg_bl" type="Node3D" parent="CharacterBody3D/body"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.17, -0.2, 0.3)
@@ -103,3 +110,10 @@ shape = SubResource("SphereShape3D_odfno")
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="RigidBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.27527)
 shape = SubResource("SphereShape3D_odfno")
+
+[node name="IK_terget_fr" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.17, -0.2, -0.28)
+modulate = Color(0.641757, 0.39207, 0.61398, 1)
+pixel_size = 0.0002
+billboard = 1
+texture = ExtResource("3_ad2qp")
