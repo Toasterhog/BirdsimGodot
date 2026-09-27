@@ -104,6 +104,9 @@ func create_plane(subdiv: int) -> Array:
 			var index = y * (subdiv+1) + x
 			var h = heights[index]
 			
+			#var jitter = Vector2(randf_range(-step*0.5, step*0.5), randf_range(-step*0.5, step*0.5)) * 0.5
+			#positions.append(Vector3(w + jitter.x, h, d + jitter.y))
+			#uvs.append(Vector2(w+jitter.x,d+jitter.y))
 			positions.append(Vector3(w, h, d))
 			uvs.append(Vector2(w,d))
 			heightMapShapeData.append(h * subdiv)

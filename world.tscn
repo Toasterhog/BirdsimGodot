@@ -85,7 +85,7 @@ size = Vector2(2000, 2000)
 [node name="world" type="Node3D"]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.98796, -0.100476, 0.117642, -0.00237899, 0.75045, 0.660923, -0.154691, -0.653245, 0.741176, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 0.877146, 0.480224, 0, -0.480223, 0.877146, 0, 0, 0)
 light_bake_mode = 1
 shadow_enabled = true
 
@@ -120,10 +120,10 @@ skeleton = NodePath("../../..")
 script = ExtResource("7_pkg7o")
 
 [node name="Player" parent="." instance=ExtResource("3_tlwt5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.5425, 8.82692, 50.2683)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.202, 8.82692, 36.3295)
 
 [node name="RigidBody3D" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -63.9997, 107.842, 63.5428)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.2945, 14.8581, 22.2779)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
 shape = SubResource("BoxShape3D_ioo17")

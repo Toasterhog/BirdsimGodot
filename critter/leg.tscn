@@ -1,0 +1,79 @@
+[gd_scene load_steps=11 format=3 uid="uid://cm7es42uk07ou"]
+
+[ext_resource type="Material" uid="uid://dbgxwl22u5cq" path="res://critter/furr_mat.tres" id="1_clrhv"]
+[ext_resource type="Script" uid="uid://6op76ocpbbq0" path="res://critter/leg.gd" id="1_tbgee"]
+[ext_resource type="Curve" uid="uid://d0fbeqc7hv15s" path="res://critter/feet_curve_forward.tres" id="2_wa1o5"]
+[ext_resource type="Curve" uid="uid://c5g0tik5imeqa" path="res://critter/feet_curve_up.tres" id="3_6rys7"]
+[ext_resource type="Material" uid="uid://cbqfj13d0m0b6" path="res://terrain/shader_mat.tres" id="3_lxwr3"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tbgee"]
+albedo_color = Color(0.751418, 0.257582, 0.321369, 1)
+roughness = 0.36
+rim = 0.1
+rim_tint = 0.45
+
+[sub_resource type="BoxMesh" id="BoxMesh_lxwr3"]
+material = SubResource("StandardMaterial3D_tbgee")
+size = Vector3(0.1, 0.1, 0.1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_ova5e"]
+material = ExtResource("1_clrhv")
+top_radius = 0.05
+bottom_radius = 0.05
+height = 0.3
+radial_segments = 8
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_o8nhx"]
+material = ExtResource("1_clrhv")
+top_radius = 0.05
+bottom_radius = 0.03
+height = 1.0
+radial_segments = 8
+
+[sub_resource type="BoxMesh" id="BoxMesh_o8nhx"]
+size = Vector3(0.605, 0.01, 0.86)
+
+[node name="leg" type="Node3D"]
+script = ExtResource("1_tbgee")
+feet_motion_forward = ExtResource("2_wa1o5")
+feet_motion_up = ExtResource("3_6rys7")
+
+[node name="raycast_leg" type="RayCast3D" parent="."]
+enabled = false
+target_position = Vector3(0, -0.717356, -0.696707)
+debug_shape_custom_color = Color(0.640797, 0.173025, 0.431556, 1)
+debug_shape_thickness = 3
+
+[node name="target_node" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.905, 0, 0, 0, 4, 0, 0, 0, 0.905, 0, -0.311535, -0.736849)
+mesh = SubResource("BoxMesh_lxwr3")
+
+[node name="thigh" type="Node3D" parent="."]
+transform = Transform3D(-4.02608e-08, 1, 1.7022e-08, -0.921061, -4.37114e-08, 0.389418, 0.389418, 0, 0.92106, 0, 0, 0)
+rotation_order = 4
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="thigh"]
+transform = Transform3D(1, 0, 0, 0, -2.98023e-08, -1, 0, 1, -2.98023e-08, 0, 0, -0.15)
+mesh = SubResource("CylinderMesh_ova5e")
+skeleton = NodePath("../..")
+
+[node name="lower_leg" type="Node3D" parent="thigh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.3)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="thigh/lower_leg"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.15)
+mesh = SubResource("CylinderMesh_ova5e")
+
+[node name="testbone" type="Node3D" parent="."]
+transform = Transform3D(0.137582, 0.928665, 0.206676, -0.928665, -4.05932e-08, 0.222552, 0.344461, -0.37092, 0.517451, 0, 0, 0)
+rotation_order = 4
+visible = false
+
+[node name="test" type="MeshInstance3D" parent="testbone"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 0.999999, -4.37114e-08, 0, 0, -0.5)
+material_override = ExtResource("3_lxwr3")
+mesh = SubResource("CylinderMesh_o8nhx")
+skeleton = NodePath("../../thigh")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="testbone"]
+mesh = SubResource("BoxMesh_o8nhx")

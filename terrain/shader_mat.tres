@@ -44,7 +44,7 @@ void fragment() {
 	
 	ROUGHNESS = 1.0 - weights.b * 0.2; //roughness;
 	METALLIC = 0.0; //metallic;
-	SPECULAR = 0.3;
+	SPECULAR = 0.0;
 }"
 
 [sub_resource type="Gradient" id="Gradient_xjfgu"]

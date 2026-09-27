@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://ma5i7qly3dwv"]
+[gd_scene load_steps=8 format=3 uid="uid://ma5i7qly3dwv"]
 
 [ext_resource type="Script" uid="uid://cysbssk3h678e" path="res://critter/entity_bakup.gd" id="1_j5v35"]
 [ext_resource type="Material" uid="uid://dbgxwl22u5cq" path="res://critter/furr_mat.tres" id="2_m46oo"]
 [ext_resource type="Texture2D" uid="uid://b1nr16yme2a7i" path="res://critter/sheep_face.png" id="3_ad2qp"]
+[ext_resource type="PackedScene" uid="uid://cm7es42uk07ou" path="res://critter/leg.tscn" id="4_m46oo"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_ova5e"]
 radius = 0.4
@@ -18,29 +19,19 @@ height = 0.35
 radial_segments = 5
 rings = 6
 
-[sub_resource type="CylinderMesh" id="CylinderMesh_ova5e"]
-material = ExtResource("2_m46oo")
-top_radius = 0.05
-bottom_radius = 0.05
-height = 0.3
-radial_segments = 8
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_odfno"]
-radius = 0.3
-
 [node name="entity" type="Node3D"]
 script = ExtResource("1_j5v35")
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+transform = Transform3D(1.485, 0, 0, 0, 1.485, 0, 0, 0, 1.485, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.495157, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.194893, 0)
 shape = SubResource("SphereShape3D_ova5e")
 
 [node name="body" type="Node3D" parent="CharacterBody3D"]
 
 [node name="mesh_body" type="MeshInstance3D" parent="CharacterBody3D/body"]
-visible = false
 mesh = SubResource("BoxMesh_iswnu")
 skeleton = NodePath("../../..")
 
@@ -58,62 +49,14 @@ shaded = true
 double_sided = false
 texture = ExtResource("3_ad2qp")
 
-[node name="leg_fl" type="Node3D" parent="CharacterBody3D/body"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.17, -0.2, -0.28)
+[node name="leg_fl" parent="CharacterBody3D/body" instance=ExtResource("4_m46oo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.2, -0.3)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D/body/leg_fl"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.168436, 0)
-mesh = SubResource("CylinderMesh_ova5e")
+[node name="leg_fr" parent="CharacterBody3D/body" instance=ExtResource("4_m46oo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.2, -0.3)
 
-[node name="leg_fr" type="Node3D" parent="CharacterBody3D/body"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.17, -0.2, -0.28)
+[node name="leg_bl" parent="CharacterBody3D/body" instance=ExtResource("4_m46oo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.2, 0.3)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D/body/leg_fr"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.15)
-mesh = SubResource("CylinderMesh_ova5e")
-
-[node name="leg_fr_lower" type="Node3D" parent="CharacterBody3D/body/leg_fr"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.3)
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D/body/leg_fr/leg_fr_lower"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.15)
-mesh = SubResource("CylinderMesh_ova5e")
-
-[node name="raycast_leg" type="RayCast3D" parent="CharacterBody3D/body/leg_fr"]
-enabled = false
-debug_shape_custom_color = Color(0.682353, 0.105882, 0.372549, 1)
-debug_shape_thickness = 3
-
-[node name="leg_bl" type="Node3D" parent="CharacterBody3D/body"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.17, -0.2, 0.3)
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D/body/leg_bl"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.168436, 0)
-mesh = SubResource("CylinderMesh_ova5e")
-
-[node name="leg_br" type="Node3D" parent="CharacterBody3D/body"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.17, -0.2, 0.3)
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D/body/leg_br"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.168436, 0)
-mesh = SubResource("CylinderMesh_ova5e")
-
-[node name="RigidBody3D" type="RigidBody3D" parent="."]
-physics_interpolation_mode = 2
-collision_layer = 0
-collision_mask = 0
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.206286)
-shape = SubResource("SphereShape3D_odfno")
-
-[node name="CollisionShape3D2" type="CollisionShape3D" parent="RigidBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.27527)
-shape = SubResource("SphereShape3D_odfno")
-
-[node name="IK_terget_fr" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.17, -0.2, -0.28)
-modulate = Color(0.641757, 0.39207, 0.61398, 1)
-pixel_size = 0.0002
-billboard = 1
-texture = ExtResource("3_ad2qp")
+[node name="leg_br" parent="CharacterBody3D/body" instance=ExtResource("4_m46oo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.2, 0.3)
