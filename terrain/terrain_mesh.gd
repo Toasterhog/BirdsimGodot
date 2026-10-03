@@ -15,11 +15,7 @@ extends MeshInstance3D
 		HeightMapTexture = new_HeightMapTexture
 		set_heightmap()
 		regenerate_mesh()
-@export_range(0.1,2.0) var Yscale : float = 1.0
-@export_range(0.1,4) var NormalStep = 1.0:
-	set(v):
-		NormalStep = v
-		regenerate_mesh()
+@export_range(0,0.5) var Yscale : float = 1.0
 @onready var HeightMapCollisionShape: CollisionShape3D = $"../CollisionShapeTerrain"
 
 var array_mesh: ArrayMesh
@@ -27,6 +23,7 @@ var HeightMapImage : Image
 var HeightMapSize : Vector2 
 
 func _ready() -> void:
+	return ##################### ALERT DISABLE TERRAINGEN, USING PRECALCULATED ALERT ################### 
 	await set_heightmap()
 	regenerate_mesh()
 
@@ -65,6 +62,8 @@ func regenerate_mesh() -> void:
 	var surface_array := create_plane(subdivisions)
 	array_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, surface_array)
 	#mesh.surface_set_material(0,mat)
+	#var armh_res : Resource = array_mesh
+	#print(ResourceSaver.save(array_mesh, "res://terrainMesh.res"))
 
 func h(u : float, v : float) -> float:
 	var col = sample(u,v)

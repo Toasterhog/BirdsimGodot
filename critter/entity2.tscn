@@ -1,35 +1,42 @@
-[gd_scene load_steps=8 format=3 uid="uid://ma5i7qly3dwv"]
+[gd_scene load_steps=12 format=3 uid="uid://ma5i7qly3dwv"]
 
-[ext_resource type="Script" uid="uid://cysbssk3h678e" path="res://critter/entity_bakup.gd" id="1_j5v35"]
-[ext_resource type="Material" uid="uid://dbgxwl22u5cq" path="res://critter/furr_mat.tres" id="2_m46oo"]
+[ext_resource type="Script" uid="uid://c5jpe0jkjwxs3" path="res://critter/body.gd" id="2_4fdnw"]
+[ext_resource type="Script" uid="uid://bux5135w6nkn5" path="res://critter/movement.gd" id="2_c1c6h"]
+[ext_resource type="Material" uid="uid://bbu0l13dxf5vn" path="res://critter/cow_mat.tres" id="2_k6njw"]
 [ext_resource type="Texture2D" uid="uid://b1nr16yme2a7i" path="res://critter/sheep_face.png" id="3_ad2qp"]
 [ext_resource type="PackedScene" uid="uid://cm7es42uk07ou" path="res://critter/leg.tscn" id="4_m46oo"]
+[ext_resource type="Script" uid="uid://e3y3qvelhqdr" path="res://critter/navigation.gd" id="5_ad2qp"]
+[ext_resource type="Material" uid="uid://clg75ycmr8pwv" path="res://critter/debug_mat.tres" id="6_k6njw"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_ova5e"]
-radius = 0.4
+radius = 0.2
 
 [sub_resource type="BoxMesh" id="BoxMesh_iswnu"]
-material = ExtResource("2_m46oo")
+material = ExtResource("2_k6njw")
 size = Vector3(0.5, 0.5, 0.8)
 
-[sub_resource type="SphereMesh" id="SphereMesh_odfno"]
-material = ExtResource("2_m46oo")
-radius = 0.2
-height = 0.35
-radial_segments = 5
-rings = 6
+[sub_resource type="BoxMesh" id="BoxMesh_k6njw"]
+material = ExtResource("2_k6njw")
+size = Vector3(0.3, 0.3, 0.3)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_c1c6h"]
+material = ExtResource("6_k6njw")
+top_radius = 0.3
+height = 0.5
+radial_segments = 6
+rings = 2
 
 [node name="entity" type="Node3D"]
-script = ExtResource("1_j5v35")
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="."]
-transform = Transform3D(1.485, 0, 0, 0, 1.485, 0, 0, 0, 1.485, 0, 0, 0)
+script = ExtResource("2_c1c6h")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.194893, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.487549, 0)
 shape = SubResource("SphereShape3D_ova5e")
 
 [node name="body" type="Node3D" parent="CharacterBody3D"]
+script = ExtResource("2_4fdnw")
 
 [node name="mesh_body" type="MeshInstance3D" parent="CharacterBody3D/body"]
 mesh = SubResource("BoxMesh_iswnu")
@@ -40,11 +47,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.172004, -0.378)
 
 [node name="mesh_head" type="MeshInstance3D" parent="CharacterBody3D/body/head"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0461112, -0.0932779)
-mesh = SubResource("SphereMesh_odfno")
+mesh = SubResource("BoxMesh_k6njw")
 skeleton = NodePath("../../mesh_body")
 
 [node name="Sprite3D" type="Sprite3D" parent="CharacterBody3D/body/head"]
-transform = Transform3D(-0.07, 0, -6.11959e-09, 0, 0.07, 0, 6.11959e-09, 0, -0.07, 0, 0.04, -0.275)
+transform = Transform3D(-0.065, 0, -9.81473e-09, 0, 0.065, 0, 9.81473e-09, 0, -0.065, 0, 0.045, -0.246)
 shaded = true
 double_sided = false
 texture = ExtResource("3_ad2qp")
@@ -60,3 +67,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.2, 0.3)
 
 [node name="leg_br" parent="CharacterBody3D/body" instance=ExtResource("4_m46oo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.2, 0.3)
+
+[node name="navigation" type="Node" parent="." node_paths=PackedStringArray("node_with_the_position")]
+script = ExtResource("5_ad2qp")
+node_with_the_position = NodePath("../CharacterBody3D")
+
+[node name="nav_raycast" type="RayCast3D" parent="navigation"]
+enabled = false
+target_position = Vector3(0, -100, 0)
+
+[node name="nav_goal_mesh" type="MeshInstance3D" parent="navigation"]
+mesh = SubResource("CylinderMesh_c1c6h")

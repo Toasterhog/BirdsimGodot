@@ -1,0 +1,65 @@
+[gd_scene load_steps=11 format=3 uid="uid://dw8e8o1qvbuab"]
+
+[ext_resource type="Script" uid="uid://bux5135w6nkn5" path="res://critter/movement.gd" id="1_xp6gp"]
+[ext_resource type="Script" uid="uid://cyp8bmoxkiq37" path="res://critter/body1leg.gd" id="2_347sa"]
+[ext_resource type="Material" uid="uid://cykhlcmhv8ssq" path="res://critter/sheep_leg_skin.tres" id="3_8hscc"]
+[ext_resource type="PackedScene" uid="uid://cm7es42uk07ou" path="res://critter/leg.tscn" id="5_2v6ll"]
+[ext_resource type="Script" uid="uid://e3y3qvelhqdr" path="res://critter/navigation.gd" id="6_q0j00"]
+[ext_resource type="Material" uid="uid://dbgxwl22u5cq" path="res://critter/furr_mat.tres" id="6_xp6gp"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ova5e"]
+radius = 0.2
+
+[sub_resource type="BoxMesh" id="BoxMesh_iswnu"]
+material = ExtResource("3_8hscc")
+size = Vector3(0.3, 0.3, 0.3)
+
+[sub_resource type="BoxMesh" id="BoxMesh_k6njw"]
+material = ExtResource("3_8hscc")
+size = Vector3(0.2, 0.12, 0.35)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_c1c6h"]
+material = ExtResource("6_xp6gp")
+top_radius = 0.3
+bottom_radius = 0.4
+height = 0.3
+radial_segments = 6
+rings = 2
+
+[node name="OneLegged" type="Node3D"]
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+script = ExtResource("1_xp6gp")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.414, 0)
+shape = SubResource("SphereShape3D_ova5e")
+
+[node name="body" type="Node3D" parent="CharacterBody3D"]
+script = ExtResource("2_347sa")
+
+[node name="mesh_body" type="MeshInstance3D" parent="CharacterBody3D/body"]
+mesh = SubResource("BoxMesh_iswnu")
+skeleton = NodePath("../../..")
+
+[node name="head" type="Node3D" parent="CharacterBody3D/body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.173596, 0)
+
+[node name="mesh_head" type="MeshInstance3D" parent="CharacterBody3D/body/head"]
+transform = Transform3D(1, 0, 0, 0, 0.981747, 0.190192, 0, -0.190192, 0.981747, 0, -0.00787669, -0.113676)
+mesh = SubResource("BoxMesh_k6njw")
+skeleton = NodePath("../../mesh_body")
+
+[node name="leg_fr" parent="CharacterBody3D/body" instance=ExtResource("5_2v6ll")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, 0)
+
+[node name="navigation" type="Node" parent="." node_paths=PackedStringArray("node_with_the_position")]
+script = ExtResource("6_q0j00")
+node_with_the_position = NodePath("../CharacterBody3D")
+
+[node name="nav_raycast" type="RayCast3D" parent="navigation"]
+enabled = false
+target_position = Vector3(0, -100, 0)
+
+[node name="nav_goal_mesh" type="MeshInstance3D" parent="navigation"]
+mesh = SubResource("CylinderMesh_c1c6h")
