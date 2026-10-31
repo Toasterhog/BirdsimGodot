@@ -1,4 +1,5 @@
 extends CharacterBody3D
+class_name SheepPhysicsBody
 
 @onready var character_body_3d: CharacterBody3D = $"."
 @onready var body: Node3D = $body

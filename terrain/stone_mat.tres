@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://dpuq3pvnmk2vy" path="res://terrain/HM3.png" id="2_2r6m3"]
 
 [resource]
+cull_mode = 2
 specular_mode = 2
 albedo_color = Color(0.275866, 0.249382, 0.133009, 1)
 metallic_specular = 0.0
