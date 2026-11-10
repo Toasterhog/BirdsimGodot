@@ -17,12 +17,14 @@ extends MeshInstance3D
 		regenerate_mesh()
 @export_range(0,0.5) var Yscale : float = 1.0
 @onready var HeightMapCollisionShape: CollisionShape3D = $"../CollisionShapeTerrain"
+@export var foleage_placer : FoleagePlacer
 
 var array_mesh: ArrayMesh
 var HeightMapImage : Image
 var HeightMapSize : Vector2 
 
 func _ready() -> void:
+	foleage_placer.place(HeightMapImage)
 	return ##################### ALERT DISABLE TERRAINGEN, USING PRECALCULATED ALERT ################### 
 	await set_heightmap()
 	regenerate_mesh()

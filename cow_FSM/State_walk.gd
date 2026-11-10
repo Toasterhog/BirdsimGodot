@@ -1,7 +1,7 @@
 extends State
 class_name StateWalk
 
-func PhysicsUpdate(delta, sheep : Node):
+func PhysicsUpdate(delta, sheep ):
 	var navigation = sheep.navigation
 	if have_reached_goal():
 		navigation.update()
