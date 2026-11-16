@@ -85,8 +85,10 @@ size = Vector2(2000, 2000)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_2u3nc"]
 noise_type = 3
-frequency = 0.0201
-fractal_octaves = 3
+frequency = 0.0267
+fractal_octaves = 2
+fractal_lacunarity = 1.835
+fractal_gain = 0.96
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_udxuc"]
 width = 1024
