@@ -7,7 +7,9 @@
 [ext_resource type="Texture2D" uid="uid://cvs5uso44eeq6" path="res://icon.svg" id="4_aqk2v"]
 [ext_resource type="Texture2D" uid="uid://bgj4k1gabq8jy" path="res://terrain/HM3suddig.png" id="4_pkg7o"]
 [ext_resource type="Script" uid="uid://btbjaxh75c3l4" path="res://terrain/immediate_mesh.gd" id="7_pkg7o"]
+[ext_resource type="Shader" uid="uid://q6h7vps0uyf6" path="res://water_fluffy_edge.gdshader" id="8_70uel"]
 [ext_resource type="PackedScene" uid="uid://dafaknp0eks4c" path="res://critter/entity.tscn" id="8_gbfbk"]
+[ext_resource type="Texture2D" uid="uid://dpuq3pvnmk2vy" path="res://terrain/HM3.png" id="9_hiqwa"]
 [ext_resource type="PackedScene" uid="uid://ma5i7qly3dwv" path="res://critter/entity2.tscn" id="9_ioo17"]
 [ext_resource type="PackedScene" uid="uid://dw8e8o1qvbuab" path="res://critter/OneLeggedCreature.tscn" id="10_wse8f"]
 [ext_resource type="Texture2D" uid="uid://ykgw2cb1u0wc" path="res://terrain/fern2.png" id="11_ic0uy"]
@@ -83,33 +85,14 @@ uv1_scale = Vector3(50, 50, 50)
 material = SubResource("StandardMaterial3D_hiqwa")
 size = Vector2(2000, 2000)
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_2u3nc"]
-noise_type = 3
-frequency = 0.0267
-fractal_octaves = 2
-fractal_lacunarity = 1.835
-fractal_gain = 0.96
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_udxuc"]
-width = 1024
-height = 1024
-seamless = true
-as_normal_map = true
-bump_strength = 15.7
-normalize = false
-noise = SubResource("FastNoiseLite_2u3nc")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ikiii"]
-transparency = 1
-albedo_color = Color(0.1216, 0.15238, 0.19, 0.662745)
-roughness = 0.01
-normal_enabled = true
-normal_texture = SubResource("NoiseTexture2D_udxuc")
-uv1_scale = Vector3(50, 50, 50)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2u3nc"]
+render_priority = 0
+shader = ExtResource("8_70uel")
+shader_parameter/HeightMap = ExtResource("9_hiqwa")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_cbp6q"]
-material = SubResource("StandardMaterial3D_ikiii")
-size = Vector2(2000, 2000)
+material = SubResource("ShaderMaterial_2u3nc")
+size = Vector2(150, 150)
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_pkg7o"]
 
@@ -207,7 +190,7 @@ mesh = SubResource("PlaneMesh_wse8f")
 skeleton = NodePath("../..")
 
 [node name="ocean_transparent_overlay" type="MeshInstance3D" parent="StaticBodyOcean"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.39012, 0)
 mesh = SubResource("PlaneMesh_cbp6q")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBodyOcean"]
